@@ -71,6 +71,8 @@ const handlers = {
         }
     },
     hideNoteDot(event) { //deleta as notas apos o mouse sair
+        if(notesPress.includes(event.target.dataset.stringfret))
+            return
         event.target.style.setProperty('--noteDotOpacity', 0);        
     },
     setAccidentals(event) {//sinto q este cara é inutil mas deixa ele por enquanto
@@ -84,7 +86,16 @@ const handlers = {
     },
     clickNoteDot(event) {
         if (event.target.classList.contains('note-fret')) {
-            alert(event.target.dataset.stringfret)
+            let notecordenate = event.target.dataset.stringfret
+            //alert(notesPress.contains(notecordenate))
+            if(notesPress.includes(notecordenate)){
+                noteIndex = notesPress.indexOf(notecordenate)
+                notesPress.splice(noteIndex, 1)
+            }else{
+                notesPress.push(notecordenate)
+                //alert(notesPress)
+            }
+            //alert(event.target.dataset.stringfret)//só pra testar o retorno
         }
     },
 
