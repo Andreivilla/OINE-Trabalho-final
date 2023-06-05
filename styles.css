@@ -5,7 +5,10 @@
     --number-of-strings: 6;
     --string-height: 10;
     --half-string-height: calc(var(--string-height) / 2);
-    --string-top-position: calc(var(--fretboard-height) / var(--number-of-strings) / 2 - var(--half-string-height));
+    --string-top-position: calc(
+        var(--fretboard-height) / var(--number-of-strings) / 2 -
+            var(--half-string-height)
+    );
     --double-fretmark-position-1: calc(var(--fretboard-height) * 0.25);
     --double-fretmark-position-2: calc(var(--fretboard-height) * 0.75);
     --noteDotOpacity: 0;
@@ -31,9 +34,11 @@ body {
     margin-left: 20px;
 }
 
-input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {  
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
     opacity: 1;
 }
+
 label {
     margin: 0 10px;
 }
@@ -86,15 +91,17 @@ label {
     height: 33px;
     border-radius: 50%;
     line-height: 33px;
-    text-align:  center;
+    text-align: center;
     background: teal;
     z-index: 2;
     color: #eee;
     opacity: var(--noteDotOpacity);
 }
 
-.single-fretmark:after, .double-fretmark:before, .double-fretmark:after {
-    content: "";
+.single-fretmark:after,
+.double-fretmark:before,
+.double-fretmark:after {
+    content: '';
     position: absolute;
     height: 20px;
     width: 20px;
@@ -130,4 +137,39 @@ label {
 }
 .note-name-section span:hover {
     color: #00baba;
+}
+
+.play-container {
+    display: flex;
+    justify-content: right;
+    margin-right: 1em;
+}
+
+.play-container > input[type='button'] {
+    background-image: url('/images/play-button.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 30% 80%;
+    background-color: #1db954;
+    border-radius: 2em;
+    border: 4px solid black;
+    margin-top: 1em;
+    width: 15em;
+    height: 5em;
+    cursor: pointer;
+}
+
+.header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 0.25em solid black;
+    border-radius: 2em;
+    padding: 1em 1em;
+    margin: 1em 25%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
 }
