@@ -45,7 +45,7 @@ label {
 .fretboard {
     display: flex;
     flex-direction: column;
-    background: #be975b url(./images/wood-pattern.png);
+    background: #352720 url(./images/wood-pattern.png);
     width: 100%;
     min-width: 1500px;
     height: calc(var(--fretboard-height) * 1px);
@@ -106,7 +106,7 @@ label {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    background: #806233;
+    background: #231b17;
 }
 
 .single-fretmark:after {
