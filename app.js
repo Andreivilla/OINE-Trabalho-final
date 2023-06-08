@@ -16,7 +16,6 @@ let numberOfStrings = instrumentTuningPresets[selectedInstrument].length//não s
 
 let notesPress = []// adicionar notas precionadas aqui
 
-
 const app = {
     init() {
      this.setupFretboard();//inicia as escalas
@@ -98,12 +97,11 @@ const handlers = {
             //alert(event.target.dataset.stringfret)//só pra testar o retorno
         }
     },
-
     setupEventListeners() {
         fretboard.addEventListener('mouseover', this.showNoteDot);
         fretboard.addEventListener('click', this.clickNoteDot);
         fretboard.addEventListener('mouseout', this.hideNoteDot);
-        numberOfFretsSelector.addEventListener('change', this.setNumberOfFrets);        
+        numberOfFretsSelector.addEventListener('change', this.setNumberOfFrets);     
     }
 }
 
@@ -125,7 +123,7 @@ const tools = {
         return element;
     }
 }
-
+//timer
 function startTimer(duration, display) {
     var timer = duration, minutes, seconds;
     setInterval(function () {
@@ -139,11 +137,46 @@ function startTimer(duration, display) {
         }
     }, 1000);
 }
+
 window.onload = function () {
     var duration = 30; // Converter para segundos
         display = document.querySelector('#timer'); // selecionando o timer
     startTimer(duration, display); // iniciando o timer
 };
+
+
+//chords
+function selectRandomChord() {
+    fetch('chords.json')
+      .then(response => response.json())
+      .then(data => {
+        var chords = data.chords;
+  
+        // Gera um índice aleatório para selecionar um acorde
+        var randomIndex = Math.floor(Math.random() * chords.length);
+  
+        // Obtém o acorde aleatório
+        var randomChord = chords[randomIndex];
+  
+        // Obtém o nome do acorde
+        var chordName = randomChord.name;
+  
+        // Obtém as posições do acorde
+        var chordPositions = randomChord.positions;
+  
+        // Exibe o nome do acorde em um elemento com ID "chords"
+        document.getElementById("chords").textContent = chordName;
+  
+        // Retorna as posições do acorde
+        return chordPositions;
+      })
+      .catch(error => {
+        console.error('Erro ao carregar o arquivo JSON:', error);
+      });
+}
+selectRandomChord()//retorna as posiçãoes das notas
+
+
 
 app.init();
 })();
