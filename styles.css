@@ -92,7 +92,7 @@ label {
     border-radius: 50%;
     line-height: 33px;
     text-align: center;
-    background: teal;
+    background: black;
     z-index: 2;
     color: #eee;
     opacity: var(--noteDotOpacity);
@@ -136,7 +136,7 @@ label {
     cursor: pointer;
 }
 .note-name-section span:hover {
-    color: #00baba;
+    color: black;
 }
 
 .play-container {
@@ -165,6 +165,7 @@ label {
     align-items: center;
     border: 0.25em solid black;
     border-radius: 2em;
+    border-color: #bbb;
     padding: 1em 1em;
     margin: 1em 25%;
 }
@@ -172,4 +173,7 @@ label {
 .container {
     display: flex;
     flex-direction: column;
+    color: #bbb;
+    justify-content: center;
+    align-items: center
 }

@@ -10,7 +10,7 @@ const instrumentTuningPresets = {
     'Guitar': [4, 9, 2, 7, 11, 4],
 };
 
-let numberOfFrets = 12;//numero de trastes isso na verdade dá 10 casas ainda não sei pq
+let numberOfFrets = 6;//numero de trastes isso na verdade dá 10 casas ainda não sei pq
 let selectedInstrument = 'Guitar';
 let numberOfStrings = instrumentTuningPresets[selectedInstrument].length//não sei pq mas quando eu mexi aqui explodiu td
 
@@ -126,6 +126,24 @@ const tools = {
     }
 }
 
+function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        display.textContent = minutes + ":" + seconds;
+        if (--timer < 0) {
+            timer = duration;
+        }
+    }, 1000);
+}
+window.onload = function () {
+    var duration = 30; // Converter para segundos
+        display = document.querySelector('#timer'); // selecionando o timer
+    startTimer(duration, display); // iniciando o timer
+};
 
 app.init();
 })();
