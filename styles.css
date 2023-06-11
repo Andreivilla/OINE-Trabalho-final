@@ -145,12 +145,37 @@ label {
     margin-right: 1em;
 }
 
-.play-container > input[type='button'] {
+#play {
     background-image: url('/images/play-button.png');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 30% 80%;
     background-color: #1db954;
+    border-radius: 2em;
+    border: 4px solid black;
+    margin-top: 1em;
+    width: 15em;
+    height: 5em;
+    cursor: pointer;
+}
+
+#play:active,
+#playing:active {
+    background-color: #eee;
+    border: 6px solid black;
+}
+
+#play:disabled,
+#playing:disabled {
+    background-color: #606060;
+}
+
+#playing {
+    background-image: url('/images/note-button.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 30% 80%;
+    background-color: #1d85b9;
     border-radius: 2em;
     border: 4px solid black;
     margin-top: 1em;
@@ -175,5 +200,5 @@ label {
     flex-direction: column;
     color: #bbb;
     justify-content: center;
-    align-items: center
+    align-items: center;
 }
