@@ -1,10 +1,25 @@
 // Game state controla se o jogo iniciou ou não. É alterado por startGame e EndGame
 let gameState = 0;
+var chordName, chordPositions
 
 function playNote() {
     // Lógica para verificar se o acorde veio corretamente entra aqui 
     // Vai precisar de uma forma de verificar os elementos HTML selecionados em fretboard
-    alert('Tocou uma nota');
+    let notesPressed = window.notesPress;
+    let rightNote = true
+
+    alert('Alvo: ' + chordPositions + '\nSelecionado: ' + notesPressed);
+
+    if (chordPositions.length !== notesPressed.length) {
+        alert('Errou')
+    } else {
+        for (let note of notesPress) {
+            rightNote = rightNote && (chordPositions.includes(note))
+        }
+    }
+
+
+
 }
 
 function startGame() {
@@ -98,10 +113,10 @@ function selectRandomChord() {
             var randomChord = chords[randomIndex];
 
             // Obtém o nome do acorde
-            var chordName = randomChord.name;
+            chordName = randomChord.name;
 
             // Obtém as posições do acorde
-            var chordPositions = randomChord.positions;
+            chordPositions = randomChord.positions;
 
             // Exibe o nome do acorde em um elemento com ID "chords"
             document.getElementById("chords").textContent = chordName;
