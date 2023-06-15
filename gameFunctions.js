@@ -15,6 +15,8 @@ function playNote() {
         //zera o timer e escolhe outro acorde
         timer.resetTimer()
         selectRandomChord()
+        //window.notesPress = []
+        //alert(window.notesPress)
     }else{
         //se tiver uma resposta para erro escreva aqui
     }
