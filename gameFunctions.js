@@ -1,29 +1,80 @@
 // Game state controla se o jogo iniciou ou não. É alterado por startGame e EndGame
 let gameState = 0;
-var chordName, chordPositions, a
+var chordName, chordPositions
+
+//var pointUser = 0, pointChord
+
 
 function playNote() {
     // Lógica para verificar se o acorde veio corretamente entra aqui 
     // Vai precisar de uma forma de verificar os elementos HTML selecionados em fretboard
     let notesPressed = window.notesPress;
-    let rightNote = true
+
+    if(verifChord(chordPositions, notesPressed)){
+        calculatePoints()
+    }else{
+        //se tiver uma resposta para erro escreva aqui
+    }
+
     
-    //alert('Alvo: ' + chordPositions + '\nSelecionado: ' + notesPressed);
-
-    verifChord(chordPositions, notesPressed)
-    /*
-    if (chordPositions.length !== notesPressed.length) {
-        alert('Errou')
-    } else {
-        for (let note of notesPress) {
-            rightNote = rightNote && (chordPositions.includes(note))
-        }
-    }*/
-
 
 
 }
-//valida nota
+//sistema pontos
+function calculatePoints(){
+    let time = getTimerValue();
+    let timelose = pointTime(time)
+    
+    setScoreValue(10-timelose)
+}
+//retorna a penalidade por tempo
+function pointTime(time){
+    const [minutes, seconds] = time.split(":");//vou deixar os minutos só por garatia ne vai q precisa
+    if (seconds >= 25 && seconds <= 30) {
+        return 0;
+      } else if (seconds >= 20 && seconds < 25) {
+        return 1;
+      } else if (seconds >= 15 && seconds < 20) {
+        return 2;
+      } else if (seconds >= 10 && seconds < 15) {
+        return 3;
+      } else if (seconds >= 5 && seconds < 10) {
+        return 4;
+      } else if (seconds >= 0 && seconds < 5) {
+        return 5;
+    }    
+}
+
+//soma pontos
+function setScoreValue(value) {
+    let scoreElement = document.getElementById('score');
+    let currentValue = parseInt(scoreElement.textContent);
+
+    if (isNaN(currentValue)) {
+        currentValue = 0;
+    }
+
+    let newValue = currentValue + value;
+    scoreElement.textContent = newValue;
+}
+
+//pega o tempo atual do timer
+function getTimerValue() {
+    // Pega o display do timer
+    let display = document.getElementById('timer');
+
+    // Obtém o valor atual do timer do texto do display
+    let timerValue = display.textContent;
+
+    // Retorna o valor atual do timer
+    return timerValue;
+}
+
+
+
+
+
+//valida chord
 function deletNote(vetor, valor){
     let indice = vetor.indexOf(valor);
 
@@ -47,14 +98,17 @@ function verifChord(targetChords, pressedChords){
     }
 
     if (target.length > 0 && pressed.length > 0){
-        alert("acertou")
+        //alert("acertou")
+        return true
     }else{
-        alert("errou")
+        //alert("errou")
+        return false
     }
 }
 
 function startGame() {
     // Só inicia se não tiver iniciado
+    let display = document.getElementById('timer')
     if (gameState === 0) {
         // gameState = 1: Jogo iniciado
         gameState = 1;
@@ -65,6 +119,7 @@ function startGame() {
 
         // Inicia o timer
         startTimer();
+
         // Seleciona o botão de play
         let playButton = document.getElementById('play');
         // Altera o id do botão, para alterar a estilização CSS
@@ -110,7 +165,8 @@ function startTimer() {
     let minutes = 1, seconds = 30;
 
     // Transforma tudo em segundos, para o controle
-    let totalSeconds = minutes * 60 + seconds;
+    //let totalSeconds = minutes * 60 + seconds;
+    let totalSeconds = seconds;
 
     let interval = setInterval(() => {
         // Se acabou o tempo, termina o interval e chama a função endGame()
