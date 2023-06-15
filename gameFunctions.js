@@ -1,25 +1,56 @@
 // Game state controla se o jogo iniciou ou não. É alterado por startGame e EndGame
 let gameState = 0;
-var chordName, chordPositions
+var chordName, chordPositions, a
 
 function playNote() {
     // Lógica para verificar se o acorde veio corretamente entra aqui 
     // Vai precisar de uma forma de verificar os elementos HTML selecionados em fretboard
     let notesPressed = window.notesPress;
     let rightNote = true
+    
+    //alert('Alvo: ' + chordPositions + '\nSelecionado: ' + notesPressed);
 
-    alert('Alvo: ' + chordPositions + '\nSelecionado: ' + notesPressed);
-
+    verifChord(chordPositions, notesPressed)
+    /*
     if (chordPositions.length !== notesPressed.length) {
         alert('Errou')
     } else {
         for (let note of notesPress) {
             rightNote = rightNote && (chordPositions.includes(note))
         }
+    }*/
+
+
+
+}
+//valida nota
+function deletNote(vetor, valor){
+    let indice = vetor.indexOf(valor);
+
+    if (indice !== -1) {
+        vetor.splice(indice, 1);
     }
 
+    return vetor
+}
+function verifChord(targetChords, pressedChords){
+    var target = targetChords.slice();
+    var pressed = pressedChords.slice();
 
+    for (targetNote of target){
+        for (pressedNote of pressed){
+            if (targetNote == pressedNote){
+                deletNote(target, targetNote)
+                deletNote(pressed, pressedNote)
+            }
+        }
+    }
 
+    if (target.length > 0 && pressed.length > 0){
+        alert("acertou")
+    }else{
+        alert("errou")
+    }
 }
 
 function startGame() {
@@ -29,6 +60,9 @@ function startGame() {
         gameState = 1;
         // Seleciona o acorde:
         selectRandomChord()//retorna as posiçãoes das notas
+        //alert(selectRandomChord())
+        
+
         // Inicia o timer
         startTimer();
         // Seleciona o botão de play
@@ -105,21 +139,22 @@ function selectRandomChord() {
         .then(response => response.json())
         .then(data => {
             var chords = data.chords;
-
+            
             // Gera um índice aleatório para selecionar um acorde
             var randomIndex = Math.floor(Math.random() * chords.length);
 
             // Obtém o acorde aleatório
             var randomChord = chords[randomIndex];
-
             // Obtém o nome do acorde
             chordName = randomChord.name;
+                        
 
             // Obtém as posições do acorde
             chordPositions = randomChord.positions;
-
+            
             // Exibe o nome do acorde em um elemento com ID "chords"
             document.getElementById("chords").textContent = chordName;
+            
 
             // Retorna as posições do acorde
             return chordPositions;
