@@ -1,9 +1,9 @@
 // Game state controla se o jogo iniciou ou não. É alterado por startGame e EndGame
 let gameState = 0;
-var chordName, chordPositions
+var chordName, chordPositions;
+var timer;
 
 //var pointUser = 0, pointChord
-
 
 function playNote() {
     // Lógica para verificar se o acorde veio corretamente entra aqui 
@@ -12,14 +12,15 @@ function playNote() {
 
     if(verifChord(chordPositions, notesPressed)){
         calculatePoints()
+        //zera o timer e escolhe outro acorde
+        timer.resetTimer()
+        selectRandomChord()
     }else{
         //se tiver uma resposta para erro escreva aqui
     }
 
-    
-
-
 }
+
 //sistema pontos
 function calculatePoints(){
     let time = getTimerValue();
@@ -70,10 +71,6 @@ function getTimerValue() {
     return timerValue;
 }
 
-
-
-
-
 //valida chord
 function deletNote(vetor, valor){
     let indice = vetor.indexOf(valor);
@@ -113,12 +110,10 @@ function startGame() {
         // gameState = 1: Jogo iniciado
         gameState = 1;
         // Seleciona o acorde:
-        selectRandomChord()//retorna as posiçãoes das notas
-        //alert(selectRandomChord())
-        
+        selectRandomChord()//retorna as posiçãoes das notas        
 
         // Inicia o timer
-        startTimer();
+        timer = timer();
 
         // Seleciona o botão de play
         let playButton = document.getElementById('play');
@@ -158,36 +153,67 @@ function endGame() {
     }
 }
 
-function startTimer() {
-    // Pega o display do timer
+function timer() {
     let display = document.getElementById('timer');
-    // Aqui define o tempo em minutos e segundos
     let minutes = 1, seconds = 30;
-
-    // Transforma tudo em segundos, para o controle
-    //let totalSeconds = minutes * 60 + seconds;
     let totalSeconds = seconds;
-
-    let interval = setInterval(() => {
-        // Se acabou o tempo, termina o interval e chama a função endGame()
+    let interval;
+  
+    function updateDisplay() {
+      const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      display.textContent = formattedTime;
+    }
+  
+    function endGame() {
+      // Lógica de finalização do jogo
+    }
+  
+    function resetTimer() {
+      clearInterval(interval);
+      minutes = 0;
+      seconds = 30;
+      totalSeconds = seconds;
+      updateDisplay();
+      interval = setInterval(() => {
         if (totalSeconds <= 0) {
-            clearInterval(interval);
-            endGame()
-            return;
+          clearInterval(interval);
+          endGame();
+          return;
         }
-
+    
         totalSeconds--;
-
         minutes = Math.floor(totalSeconds / 60);
         seconds = totalSeconds % 60;
-
-        // Aqui é a string formatada, padStart adiciona o '0' se o tamanho da string é menor que 2
-        const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-        // Conteúdo formatado vai para o display do timer
-        display.textContent = formattedTime
+    
+        updateDisplay();
+      }, 1000);
+    }
+  
+    function stopTimer() {
+      clearInterval(interval);
+    }
+  
+    interval = setInterval(() => {
+      if (totalSeconds <= 0) {
+        clearInterval(interval);
+        endGame();
+        return;
+      }
+  
+      totalSeconds--;
+      minutes = Math.floor(totalSeconds / 60);
+      seconds = totalSeconds % 60;
+  
+      updateDisplay();
     }, 1000);
-}
+  
+    return {
+      resetTimer: resetTimer,
+      stopTimer: stopTimer
+    };
+  }
+  
+  
 
 // Só trouxe a função do Andrei pra cá, talvez ela possa continuar em app.js e ser chamada de lá, não sei...
 function selectRandomChord() {

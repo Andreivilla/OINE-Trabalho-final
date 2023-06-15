@@ -66,9 +66,6 @@ const app = {
         noteIndex = noteIndex % 12;
         return notesSharp[noteIndex];
     },
-    /*teste() {
-        alert('teste')
-    }*/
 }
 
 const handlers = {
