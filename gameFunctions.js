@@ -75,36 +75,20 @@ function getTimerValue() {
 }
 
 //valida chord
-function deletNote(vetor, valor) {
-  let indice = vetor.indexOf(valor);
-
-  if (indice !== -1) {
-    vetor.splice(indice, 1);
-  }
-
-  return vetor
-}
 function verifChord(targetChords, pressedChords) {
-  var target = targetChords.slice();
-  var pressed = pressedChords.slice();
-
-  for (targetNote of target) {
-    for (pressedNote of pressed) {
-      if (targetNote == pressedNote) {
-        deletNote(target, targetNote)
-        deletNote(pressed, pressedNote)
-      }
-    }
+  // Verifica se os arrays têm o mesmo tamanho
+  if (targetChords.length !== pressedChords.length) {
+    return false;
   }
 
-  if (target.length > 0 && pressed.length > 0) {
-    //alert("acertou")
-    return true
-  } else {
-    //alert("errou")
-    return false
-  }
+  // Cria cópias ordenadas dos arrays
+  const sortedTarget = targetChords.slice().sort();
+  const sortedPressed = pressedChords.slice().sort();
+
+  // Verifique se todos os elementos correspondem em ambos os arrays
+  return sortedTarget.every((val, index) => val === sortedPressed[index]);
 }
+
 
 function startGame() {
   // Só inicia se não tiver iniciado
