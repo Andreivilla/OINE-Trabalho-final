@@ -101,6 +101,8 @@ const handlers = {
             }
             //alert(event.target.dataset.stringfret)//só pra testar o retorno
         }
+
+        window.notesPress = notesPress;
     },
     setupEventListeners() {
         fretboard.addEventListener('mouseover', this.showNoteDot);
@@ -120,7 +122,7 @@ function clearSelectedNotes() {
     });
 
     // Limpar o array notesPress
-    notesPress = [];
+    window.notesPress = notesPress = [];
 }
 
 window.clearSelectedNotes = clearSelectedNotes;
@@ -132,7 +134,7 @@ function numberString(n) {
     return strings[n];
 }
 function generateStringFret(string, fret) {
-    return ' ' + numberString(string) + '-' + fret;
+    return numberString(string) + '-' + fret;
 }
 
 const tools = {
