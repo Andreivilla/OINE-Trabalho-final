@@ -110,6 +110,22 @@ const handlers = {
     }
 }
 
+function clearSelectedNotes() {
+    notesPress.forEach(noteCordinate => {
+        let noteFret = document.querySelector(`[data-stringfret="${noteCordinate}"]`);
+        if (noteFret) {
+            noteFret.style.setProperty('--noteDotOpacity', 0);
+            noteFret.removeEventListener('click', handlers.clickNoteDot);
+        }
+    });
+
+    // Limpar o array notesPress
+    notesPress = [];
+}
+
+window.clearSelectedNotes = clearSelectedNotes;
+
+
 //funçoes de manipulação talvez seja educado colocar em outro arquivo
 function numberString(n) {
     const strings = [6, 5, 4, 3, 2, 1];
