@@ -202,3 +202,34 @@ label {
     justify-content: center;
     align-items: center;
 }
+
+.save-score-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: baseline;
+    align-items: center;
+    margin: 1em 1em 1em 1em;
+}
+
+#label-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #bbb;
+}
+
+#text-name {
+    margin-top: 0.25em;
+    height: 2em;
+    border: 2px solid black;
+}
+
+#btn-name {
+    width: 9em;
+    height: 3em;
+    background-color: #adffca;
+    margin-left: 1em;
+    border-radius: 2em;
+    border: 3px solid black;
+    font-size: 1em;
+    cursor: pointer;
+}

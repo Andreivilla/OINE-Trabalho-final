@@ -31,6 +31,18 @@ function calculatePoints() {
 
   setScoreValue(10 - timelose)
 }
+
+function ToggleScoreDiv() {
+  const scoreContainer = document.getElementById('save-score');
+  const children = scoreContainer.children;
+  let setVal = gameState === 1 ? true : false;
+
+  for (let i = 0; i < children.length; i++) {
+    children[i].hidden = setVal;
+  }
+
+}
+
 //retorna a penalidade por tempo
 function pointTime(time) {
   const [minutes, seconds] = time.split(":");//vou deixar os minutos só por garatia ne vai q precisa
