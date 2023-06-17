@@ -1,7 +1,7 @@
 // Game state controla se o jogo iniciou ou não. É alterado por startGame e EndGame
 let gameState = 0;
 var chordName, chordPositions;
-var timer;
+var timer = timer();
 
 function clearNotes() { window.clearSelectedNotes(); }
 
@@ -19,10 +19,9 @@ function playNote() {
     selectRandomChord()
     //window.notesPress = []
     //alert(window.notesPress)
-  } else {
-    clearNotes();
   }
 
+  clearNotes();
 }
 
 //sistema pontos
@@ -115,10 +114,10 @@ function startGame() {
     gameState = 1;
     clearNotes()
     // Seleciona o acorde:
-    selectRandomChord()//retorna as posiçãoes das notas        
+    selectRandomChord();//retorna as posiçãoes das notas
 
     // Inicia o timer
-    timer = timer();
+    timer.startTimer();
 
     // Seleciona o botão de play
     let playButton = document.getElementById('play');
@@ -130,26 +129,24 @@ function startGame() {
 }
 
 function endGame() {
-  // Só finaliza se não tiver finalizado
+  // Só finaliza se não estiver finalizado / aguardando
   if (gameState === 1) {
     // gameState = 1: Fim de jogo
     gameState = 0;
+
     // Seleciona o botão de play alterado (que agora é playing)
     let playButton = document.getElementById('playing');
+
     // Retorna o botão para o id play
     playButton.id = 'play';
+
     // Desabilita ele, vai desabilitar por 3 segundos logo abaixo
     playButton.disabled = true;
 
-    // Seleciona o display do timer
-    let display = document.getElementById('timer');
-    // Exibe "Game Over!" no display do timer
-    display.textContent = "Game Over!"
-
     // Inicia um timer de 3 segundos, executa a função dentro dele quando acaba
     setTimeout(() => {
-      // Retira o conteúdo do display do timer
-      display.textContent = "";
+      clearChord();
+      timer.clearDisplay();
       // Habilita o botão
       playButton.disabled = false;
       // Devolve a função original do botão, de iniciar o jogo
@@ -160,26 +157,30 @@ function endGame() {
 
 function timer() {
   let display = document.getElementById('timer');
-  let minutes = 1, seconds = 30;
-  let totalSeconds = seconds;
+  let minutes, seconds, totalSeconds;
   let interval;
+
+  function declareSeconds() {
+    // Aqui configura o tempo em min e seg de tudo, pra não precisar reescrever em mais de um lugar
+    minutes = 0;
+    seconds = 30;
+    totalSeconds = (minutes % 60) + seconds;
+  }
 
   function updateDisplay() {
     const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     display.textContent = formattedTime;
   }
 
-  function endGame() {
-    // Lógica de finalização do jogo
+  function clearDisplay() {
+    display.textContent = "";
   }
 
-  function resetTimer() {
-    clearInterval(interval);
-    minutes = 0;
-    seconds = 30;
-    totalSeconds = seconds;
+  function startTimer() {
+    declareSeconds();
     updateDisplay();
     interval = setInterval(() => {
+
       if (totalSeconds <= 0) {
         clearInterval(interval);
         endGame();
@@ -194,31 +195,19 @@ function timer() {
     }, 1000);
   }
 
+  function resetTimer() {
+    clearInterval(interval);
+    declareSeconds();
+    updateDisplay();
+    startTimer();
+  }
+
   function stopTimer() {
     clearInterval(interval);
   }
 
-  interval = setInterval(() => {
-    if (totalSeconds <= 0) {
-      clearInterval(interval);
-      endGame();
-      return;
-    }
-
-    totalSeconds--;
-    minutes = Math.floor(totalSeconds / 60);
-    seconds = totalSeconds % 60;
-
-    updateDisplay();
-  }, 1000);
-
-  return {
-    resetTimer: resetTimer,
-    stopTimer: stopTimer
-  };
+  return { startTimer, resetTimer, stopTimer, clearDisplay };
 }
-
-
 
 // Só trouxe a função do Andrei pra cá, talvez ela possa continuar em app.js e ser chamada de lá, não sei...
 function selectRandomChord() {
@@ -242,11 +231,14 @@ function selectRandomChord() {
       // Exibe o nome do acorde em um elemento com ID "chords"
       document.getElementById("chords").textContent = chordName;
 
-
       // Retorna as posições do acorde
       return chordPositions;
     })
     .catch(error => {
       console.error('Erro ao carregar o arquivo JSON:', error);
     });
+}
+
+function clearChord() {
+  document.getElementById("chords").textContent = '';
 }
