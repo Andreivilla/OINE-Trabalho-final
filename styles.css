@@ -203,12 +203,21 @@ label {
     align-items: center;
 }
 
-.save-score-container {
+#save-score-div {
     display: flex;
     flex-direction: row;
     justify-content: baseline;
     align-items: center;
-    margin: 1em 1em 1em 1em;
+    margin: 0.5em 1em 1em 1em;
+}
+
+#scoreboard-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: baseline;
+    align-items: baseline;
+    margin: 2em;
+    color: #bbb;
 }
 
 #label-name {

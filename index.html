@@ -30,7 +30,7 @@
             <input type="button" id="play" onclick="startGame()" />
         </div>
 
-        <div class="save-score-container" id="save-score">
+        <div id="save-score-div">
             <label id="label-name" hidden>Nome do Jogador: </label>
             <input
                 type="text"
@@ -38,7 +38,15 @@
                 placeholder="Digite seu nome"
                 hidden
             />
-            <input type="button" id="btn-name" value="Salvar Score!" hidden />
+            <input
+                type="button"
+                id="btn-name"
+                value="Salvar Score!"
+                onclick="savePlayerScore()"
+                hidden
+            />
         </div>
+
+        <div id="scoreboard-div" onload="updateScoreboard()"></div>
     </body>
 </html>

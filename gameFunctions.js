@@ -7,15 +7,18 @@ let timerDisplay = document.getElementById('timer');
 let minutes, seconds, totalSeconds;
 let interval;
 
+let score = 0;
 
 // Inicia o jogo
 function startGame() {
   // Só inicia se não tiver iniciado
-  let display = document.getElementById('timer')
   if (gameState === 0) {
     // gameState = 1: Jogo iniciado
     gameState = 1;
-    clearNotes()
+    clearNotes();
+
+    toogleScoreHidden(true);
+
     // Seleciona o acorde:
     selectRandomChord();//retorna as posiçãoes das notas
 
@@ -38,13 +41,17 @@ function endGame() {
     // gameState = 1: Fim de jogo
     gameState = 0;
 
+    toogleScoreHidden(false);
+
+    clearNotes();
+
     // Seleciona o botão de play alterado (que agora é playing)
     let playButton = document.getElementById('playing');
 
     // Retorna o botão para o id play
     playButton.id = 'play';
 
-    // Desabilita ele, vai desabilitar por 3 segundos logo abaixo
+    // Desabilita ele, vai habilitar depois de 3 segundos com o timeout abaixo
     playButton.disabled = true;
 
     // Inicia um timer de 3 segundos, executa a função dentro dele quando acaba
@@ -66,9 +73,9 @@ function playChord() {
   let notesPressed = window.notesPress;
 
   if (verifChord(chordPositions, notesPressed)) {
-    playSound('sons/acordes/acorde-'+ chordName +'.mp3')
+    playSound('sons/acordes/acorde-' + chordName + '.mp3')
     calculatePoints()
-    //zera o timer e escolhe outro acorde
+    // zera o timer e escolhe outro acorde
     resetTimer()
     selectRandomChord()
     //window.notesPress = []
@@ -80,8 +87,8 @@ function playChord() {
 
 
 function playSound(caminho) {
-    var audio = new Audio(caminho);
-    audio.play();
+  var audio = new Audio(caminho);
+  audio.play();
 }
 
 // Atribuição dos valores minutes, seconds e totalSeconds (para iniciar ou reiniciar o timer)
@@ -141,27 +148,24 @@ function clearNotes() { window.clearSelectedNotes(); }
 
 // Calcula os pontos que o player ganha ao acertar a nota. Pontos são descontados quanto menor o tempo restante
 function calculatePoints() {
-  let time = getTimerValue();
-  let timelose = pointTime(time)
-
-  setScoreValue(10 - timelose)
+  let timeLost = pointTime();
+  setScoreValue(10 - timeLost)
 }
 
 // Função para esconder o cadastro do usuário durante o jogo, e aparecer apenas quando acabar(ainda fazendo)
-// function ToggleScoreDiv() {
-//   const scoreContainer = document.getElementById('save-score');
-//   const children = scoreContainer.children;
-//   let setVal = gameState === 1 ? true : false;
+function toogleScoreHidden(bool) {
+  const scoreContainer = document.getElementById('save-score-div');
+  const children = scoreContainer.children;
 
-//   for (let i = 0; i < children.length; i++) {
-//     children[i].hidden = setVal;
-//   }
-
-// }
+  if ((!bool && score > 0) || bool) {
+    for (let i = 0; i < children.length; i++) {
+      children[i].hidden = bool;
+    }
+  }
+}
 
 // Retorna o valor da penalidade que será descontada da pontuação após o jogador acertar a nota
-function pointTime(time) {
-  const [minutes, seconds] = time.split(":");//vou deixar os minutos só por garatia ne vai q precisa
+function pointTime() {
   if (seconds >= 25 && seconds <= 30) {
     return 0;
   } else if (seconds >= 20 && seconds < 25) {
@@ -179,15 +183,11 @@ function pointTime(time) {
 
 // Soma os pontos com a quantidade que o jogador acumulou até o momento
 function setScoreValue(value) {
-  let scoreElement = document.getElementById('score');
-  let currentValue = parseInt(scoreElement.textContent);
+  let scoreDisplay = document.getElementById('score');
 
-  if (isNaN(currentValue)) {
-    currentValue = 0;
-  }
+  score = score + value
 
-  let newValue = currentValue + value;
-  scoreElement.textContent = newValue;
+  scoreDisplay.textContent = score;
 }
 
 // Pega o tempo atual do timer
@@ -200,6 +200,43 @@ function getTimerValue() {
 
   // Retorna o valor atual do timer
   return timerValue;
+}
+
+function setScoreboard(scoreArray) {
+  localStorage.setItem('scoreboard', JSON.stringify(scoreArray));
+}
+
+function loadScoreboard() {
+  const storedPlayers = localStorage.getItem('scoreboard');
+  return storedPlayers ? JSON.parse(storedPlayers) : [];
+}
+
+function savePlayerScore() {
+  const scoreboard = loadScoreboard();
+  let name = document.getElementById('text-name').value;
+
+  if (name && score > 0) {
+    scoreboard.push({ name, score });
+    setScoreboard(scoreboard);
+    toogleScoreHidden(true);
+    updateScoreboard()
+  }
+}
+
+function updateScoreboard() {
+  const scoreboard = loadScoreboard();
+  const container = document.getElementById('scoreboard-div');
+
+  const h1 = document.createElement('h1');
+  h1.innerText = 'Ranking dos Jogadores';
+  container.appendChild(h1);
+
+  scoreboard.forEach((player) => {
+    const scoreDisplay = document.createElement('h3');
+    scoreDisplay.innerText = `${player.name}: ${player.score}`;
+    container.appendChild(scoreDisplay)
+  })
+
 }
 
 // Valida se as cordas pressionadas no braço do violão são as da nota alvo
