@@ -27,7 +27,7 @@ function startGame() {
     // Altera o id do botão, para alterar a estilização CSS
     playButton.id = 'playing';
     // Altera a função do botão, para que verifique as notas tocadas
-    playButton.onclick = playNote;
+    playButton.onclick = playChord;
   }
 }
 
@@ -60,12 +60,13 @@ function endGame() {
 }
 
 // Quando o jogo está iniciado, toca as notas pressionadas quando o botão principal é clicado
-function playNote() {
+function playChord() {
   // Lógica para verificar se o acorde veio corretamente entra aqui 
   // Vai precisar de uma forma de verificar os elementos HTML selecionados em fretboard
   let notesPressed = window.notesPress;
 
   if (verifChord(chordPositions, notesPressed)) {
+    playSound('sons/acordes/acorde-'+ chordName +'.mp3')
     calculatePoints()
     //zera o timer e escolhe outro acorde
     resetTimer()
@@ -75,6 +76,12 @@ function playNote() {
   }
 
   clearNotes();
+}
+
+
+function playSound(caminho) {
+    var audio = new Audio(caminho);
+    audio.play();
 }
 
 // Atribuição dos valores minutes, seconds e totalSeconds (para iniciar ou reiniciar o timer)

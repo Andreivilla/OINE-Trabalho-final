@@ -95,13 +95,12 @@ const handlers = {
             if (notesPress.includes(notecordenate)) {
                 noteIndex = notesPress.indexOf(notecordenate)
                 notesPress.splice(noteIndex, 1)
-            } else {
-                notesPress.push(notecordenate)
-                //alert(notesPress)
-            }
-            //alert(event.target.dataset.stringfret)//só pra testar o retorno
-        }
 
+            } else {
+                playSound('sons/cordas/corda-'+  notecordenate +'.mp3')
+                notesPress.push(notecordenate)                
+            }
+        }        
         window.notesPress = notesPress;
     },
     setupEventListeners() {
@@ -145,6 +144,11 @@ const tools = {
         }
         return element;
     }
+}
+//função q toca qualquer som
+function playSound(caminho) {
+    var audio = new Audio(caminho);
+    audio.play();
 }
 //timer
 // function startTimer(duration, display) {
