@@ -15,9 +15,11 @@ function startGame() {
   if (gameState === 0) {
     // gameState = 1: Jogo iniciado
     gameState = 1;
+    score = 0;
     clearNotes();
 
     toogleScoreHidden(true);
+    toogleScoreboardHidden(true);
 
     // Seleciona o acorde:
     selectRandomChord();//retorna as posiçãoes das notas
@@ -27,10 +29,11 @@ function startGame() {
 
     // Seleciona o botão de play
     let playButton = document.getElementById('play');
-    // Altera o id do botão, para alterar a estilização CSS
-    playButton.id = 'playing';
     // Altera a função do botão, para que verifique as notas tocadas
     playButton.onclick = playChord;
+    // Altera o id do botão, para alterar a estilização CSS
+    playButton.id = 'playing';
+
   }
 }
 
@@ -41,7 +44,11 @@ function endGame() {
     // gameState = 1: Fim de jogo
     gameState = 0;
 
-    toogleScoreHidden(false);
+    if (checkNewHighscore()) {
+      toogleScoreHidden(false);
+    }
+
+    toogleScoreboardHidden(false);
 
     clearNotes();
 
@@ -157,10 +164,27 @@ function toogleScoreHidden(bool) {
   const scoreContainer = document.getElementById('save-score-div');
   const children = scoreContainer.children;
 
+
   if ((!bool && score > 0) || bool) {
     for (let i = 0; i < children.length; i++) {
       children[i].hidden = bool;
     }
+  }
+}
+
+// Deixa o ranking invisível ou não, dependendo de bool, sempre o jogo não está rodando
+function toogleScoreboardHidden(bool) {
+  const rankingContainer = document.getElementById('scoreboard-div');
+  const children = rankingContainer.children;
+
+  if (bool) {
+    rankingContainer.className = "";
+  } else {
+    rankingContainer.className = "scoreboard-container"
+  }
+
+  for (let i = 0; i < children.length; i++) {
+    children[i].hidden = bool;
   }
 }
 
@@ -202,41 +226,89 @@ function getTimerValue() {
   return timerValue;
 }
 
+// Função que salva o array "scoreArray" no localStorage
 function setScoreboard(scoreArray) {
   localStorage.setItem('scoreboard', JSON.stringify(scoreArray));
 }
 
+// Função que puxa o array em localStorage;
 function loadScoreboard() {
   const storedPlayers = localStorage.getItem('scoreboard');
   return storedPlayers ? JSON.parse(storedPlayers) : [];
 }
 
+// Função que salva o score do jogador, adicionando-o no array e usando a função setScoreboard para gravar a alteração
 function savePlayerScore() {
   const scoreboard = loadScoreboard();
   let name = document.getElementById('text-name').value;
 
   if (name && score > 0) {
+
     scoreboard.push({ name, score });
+    // Abaixo, ordena pela pontuação em ordem descrescente
+    scoreboard.sort((a, b) => b.score - a.score);
+
+    // Se o número de elementos passou de 5, remove o último
+    if (scoreboard.length > 5) {
+      scoreboard.pop();
+    }
+
     setScoreboard(scoreboard);
     toogleScoreHidden(true);
-    updateScoreboard()
+    updateScoreboard();
   }
 }
 
+// Função que atualiza o display do score, e atualiza ele de acordo com o que está no localStorage
 function updateScoreboard() {
   const scoreboard = loadScoreboard();
   const container = document.getElementById('scoreboard-div');
 
+  container.innerHTML = '';
+
   const h1 = document.createElement('h1');
-  h1.innerText = 'Ranking dos Jogadores';
+  h1.innerText = 'Melhores Pontuações:';
   container.appendChild(h1);
 
-  scoreboard.forEach((player) => {
-    const scoreDisplay = document.createElement('h3');
-    scoreDisplay.innerText = `${player.name}: ${player.score}`;
-    container.appendChild(scoreDisplay)
-  })
+  if (scoreboard.length > 0) {
+    let emptyDisplay = document.getElementById('empty-scoreboard');
 
+    if (emptyDisplay) {
+      container.removeChild(emptyDisplay)
+    }
+
+    for (let i = 0; i < scoreboard.length; i++) {
+      let player = scoreboard[i];
+      const scoreDisplay = document.createElement('h2');
+      scoreDisplay.innerText = `${i + 1}º ${player.name}: ${player.score} pts`;
+      container.appendChild(scoreDisplay)
+    }
+  } else {
+    if (!document.getElementById('empty-scoreboard')) {
+      const emptyDisplay = document.createElement('h2')
+      emptyDisplay.id = 'empty-scoreboard';
+      emptyDisplay.innerText = 'Não há pontuações salvas!';
+      container.appendChild(emptyDisplay)
+    }
+  }
+}
+
+// Função para verificar se o score pode ser salvo. Só será salvo se tiver menos que 5 registros, se tiver 5, a pontuação deve ser melhor que a de um dos 5
+function checkNewHighscore() {
+  const scoreboard = loadScoreboard();
+
+  if (scoreboard.length >= 5) {
+
+    for (let i = 0; i < scoreboard.length; i++) {
+      if (score > scoreboard[i].score) {
+        return true
+      }
+    }
+
+    return false;
+  } else {
+    return true
+  }
 }
 
 // Valida se as cordas pressionadas no braço do violão são as da nota alvo

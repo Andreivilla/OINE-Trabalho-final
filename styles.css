@@ -211,15 +211,6 @@ label {
     margin: 0.5em 1em 1em 1em;
 }
 
-#scoreboard-div {
-    display: flex;
-    flex-direction: column;
-    justify-content: baseline;
-    align-items: baseline;
-    margin: 2em;
-    color: #bbb;
-}
-
 #label-name {
     font-size: 1.5em;
     font-weight: bold;
@@ -241,4 +232,26 @@ label {
     border: 3px solid black;
     font-size: 1em;
     cursor: pointer;
+}
+
+.scoreboard-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: baseline;
+    align-items: baseline;
+    color: #bbb;
+    background-color: #034fd2;
+    padding: 2em;
+    border-top: 4px solid black;
+    min-height: 33.7vh;
+}
+
+.scoreboard-container > h1 {
+    font-size: 2.5em;
+    margin: 0em 0em 0.5em 0em;
+}
+
+.scoreboard-container > h2 {
+    font-size: 1.75em;
+    margin-bottom: 0.25em;
 }
