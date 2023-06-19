@@ -213,7 +213,6 @@ label {
 
 #label-name {
     font-size: 1.5em;
-    font-weight: bold;
     color: #bbb;
 }
 
@@ -240,18 +239,20 @@ label {
     justify-content: baseline;
     align-items: baseline;
     color: #bbb;
-    background-color: #034fd2;
+    background-color: #376a7e;
     padding: 2em;
     border-top: 4px solid black;
     min-height: 33.7vh;
 }
 
 .scoreboard-container > h1 {
-    font-size: 2.5em;
+    font-size: 3em;
     margin: 0em 0em 0.5em 0em;
+    font-weight: 400;
 }
 
 .scoreboard-container > h2 {
-    font-size: 1.75em;
+    font-size: 2em;
     margin-bottom: 0.25em;
+    font-weight: 300;
 }
