@@ -16,6 +16,8 @@ function startGame() {
     // gameState = 1: Jogo iniciado
     gameState = 1;
     score = 0;
+
+    clearScoreDisplay();
     clearNotes();
 
     toogleScoreHidden(true);
@@ -80,6 +82,7 @@ function playChord() {
   let notesPressed = window.notesPress;
 
   if (verifChord(chordPositions, notesPressed)) {
+
     playSound('sons/acordes/acorde-' + chordName + '.mp3')
     calculatePoints()
     // zera o timer e escolhe outro acorde
@@ -87,6 +90,8 @@ function playChord() {
     selectRandomChord()
     //window.notesPress = []
     //alert(window.notesPress)
+  } else {
+    playSound('sons/Duck Quack.mp3')
   }
 
   clearNotes();
@@ -359,4 +364,8 @@ function selectRandomChord() {
 // Limpa o display de acorde alvo
 function clearChordDisplay() {
   document.getElementById("chords").textContent = '';
+}
+
+function clearScoreDisplay() {
+  document.getElementById('score').textContent = '';
 }

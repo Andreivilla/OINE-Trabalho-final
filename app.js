@@ -97,10 +97,10 @@ const handlers = {
                 notesPress.splice(noteIndex, 1)
 
             } else {
-                playSound('sons/cordas/corda-'+  notecordenate +'.mp3')
-                notesPress.push(notecordenate)                
+                playSound('sons/cordas/corda-' + notecordenate + '.mp3')
+                notesPress.push(notecordenate)
             }
-        }        
+        }
         window.notesPress = notesPress;
     },
     setupEventListeners() {
