@@ -183,7 +183,6 @@ label {
     height: 5em;
     cursor: pointer;
 }
-
 .header {
     display: flex;
     justify-content: space-around;
@@ -201,6 +200,16 @@ label {
     color: #bbb;
     justify-content: center;
     align-items: center;
+}
+.container-duck {
+    display: flex;
+    justify-content: space-around;
+    float: left;
+}
+#duck-scream img {
+    width: 130px;
+    height: 100%;
+    top: 0;
 }
 
 #save-score-div {
@@ -256,3 +265,6 @@ label {
     margin-bottom: 0.25em;
     font-weight: 300;
 }
+
+
+  

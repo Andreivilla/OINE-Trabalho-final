@@ -84,13 +84,16 @@ function playChord() {
   if (verifChord(chordPositions, notesPressed)) {
 
     playSound('sons/acordes/acorde-' + chordName + '.mp3')
+    
     calculatePoints()
     // zera o timer e escolhe outro acorde
     resetTimer()
     selectRandomChord()
-    //window.notesPress = []
-    //alert(window.notesPress)
+    
+
+
   } else {
+    duckScream(true)
     playSound('sons/Duck Quack.mp3')
   }
 
@@ -161,7 +164,7 @@ function clearNotes() { window.clearSelectedNotes(); }
 // Calcula os pontos que o player ganha ao acertar a nota. Pontos são descontados quanto menor o tempo restante
 function calculatePoints() {
   let timeLost = pointTime();
-  setScoreValue(10 - timeLost)
+  setScoreValue((10 - timeLost)*10)
 }
 
 // Função para esconder o cadastro do usuário durante o jogo, e aparecer apenas quando acabar(ainda fazendo)
@@ -190,6 +193,27 @@ function toogleScoreboardHidden(bool) {
 
   for (let i = 0; i < children.length; i++) {
     children[i].hidden = bool;
+  }
+}
+//faz o pato aparecer e sumir
+function duckScream(bool) {
+  const duckContainer = document.getElementById('duck-scream');
+  
+  if (bool) {
+    // Cria um elemento <img> para exibir o gif
+    const gif = document.createElement('img');
+    gif.src = 'images/duck_scream.gif';
+
+    // Adiciona o gif à div
+    duckContainer.appendChild(gif);
+
+    // Adiciona um evento de escuta para quando o gif terminar de ser reproduzido
+    gif.addEventListener('load', function() {
+      setTimeout(function() {
+        // Remove o gif da div após 0,5 segundos
+        duckContainer.removeChild(gif);
+      }, 350);
+    });
   }
 }
 
