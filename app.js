@@ -5,18 +5,11 @@ const numberOfFretsSelector = document.querySelector('#number-of-frets');
 const singleFretMarkPositions = [3, 5, 7, 9, 15, 17, 19, 21];
 const doubleFretMarkPositions = [12, 24];
 const notesSharp = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-// const instrumentTuningPresets = {
-//     'Guitar': [4, 9, 2, 7, 11, 4],
-// };
 
 // Alterei para ser fixo com a guitarra, já que imagino que não trabalharemos com os outros instrumentos
 const TuningPresets = [4, 9, 2, 7, 11, 4];
 let numberOfFrets = 6;
 let numberOfStrings = 6
-
-// let selectedInstrument = 'Guitar';
-// let numberOfStrings = instrumentTuningPresets[selectedInstrument].length//não sei pq mas quando eu mexi aqui explodiu td
-
 let notesPress = []// adicionar notas precionadas aqui
 
 window.notesPress = notesPress;
@@ -24,7 +17,6 @@ window.notesPress = notesPress;
 const app = {
     init() {
         this.setupFretboard();//inicia as escalas
-        //this.setupNoteNameSection(); //esse cara são as notas lá de baixo nem sei pq isso existe até agr apaguei
         handlers.setupEventListeners();
     },
     setupFretboard() {
@@ -150,57 +142,4 @@ function playSound(caminho) {
     var audio = new Audio(caminho);
     audio.play();
 }
-//timer
-// function startTimer(duration, display) {
-//     var timer = duration, minutes, seconds;
-//     setInterval(function () {
-//         minutes = parseInt(timer / 60, 10);
-//         seconds = parseInt(timer % 60, 10);
-//         minutes = minutes < 10 ? "0" + minutes : minutes;
-//         seconds = seconds < 10 ? "0" + seconds : seconds;
-//         display.textContent = minutes + ":" + seconds;
-//         if (--timer < 0) {
-//             timer = duration;
-//         }
-//     }, 1000);
-// }
-
-// window.onload = function () {
-//     var duration = 30; // Converter para segundos
-//     display = document.querySelector('#timer'); // selecionando o timer
-//     startTimer(duration, display); // iniciando o timer
-// };
-
-
-// //chords
-// function selectRandomChord() {
-//     fetch('chords.json')
-//         .then(response => response.json())
-//         .then(data => {
-//             var chords = data.chords;
-
-//             // Gera um índice aleatório para selecionar um acorde
-//             var randomIndex = Math.floor(Math.random() * chords.length);
-
-//             // Obtém o acorde aleatório
-//             var randomChord = chords[randomIndex];
-
-//             // Obtém o nome do acorde
-//             var chordName = randomChord.name;
-
-//             // Obtém as posições do acorde
-//             var chordPositions = randomChord.positions;
-
-//             // Exibe o nome do acorde em um elemento com ID "chords"
-//             document.getElementById("chords").textContent = chordName;
-
-//             // Retorna as posições do acorde
-//             return chordPositions;
-//         })
-//         .catch(error => {
-//             console.error('Erro ao carregar o arquivo JSON:', error);
-//         });
-// }
-// selectRandomChord()//retorna as posiçãoes das notas
-
 app.init();
